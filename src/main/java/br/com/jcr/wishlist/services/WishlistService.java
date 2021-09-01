@@ -4,6 +4,7 @@ import br.com.jcr.wishlist.exceptions.MaximumProductLimitException;
 import br.com.jcr.wishlist.models.Product;
 import br.com.jcr.wishlist.models.Wishlist;
 import br.com.jcr.wishlist.templates.WishlistTemplate;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class WishlistService {
 
     public UpdateResult removeProductInCustomerWishlist(String customerId, String productId){
         return  wishlistTemplate.removeProductInCustomerWishlist(customerId, productId);
+    }
+
+    public DeleteResult deleteCustomerWishlist(String customerId){
+        return  wishlistTemplate.deleteCustomerWishlist(customerId);
     }
 
     public UpdateResult insertProductInCustomerWishlist(String customerId, Product product) throws MaximumProductLimitException {
