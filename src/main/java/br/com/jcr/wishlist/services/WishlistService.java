@@ -1,5 +1,6 @@
 package br.com.jcr.wishlist.services;
 
+import br.com.jcr.wishlist.exceptions.MaximumProductLimitException;
 import br.com.jcr.wishlist.models.Product;
 import br.com.jcr.wishlist.models.Wishlist;
 import br.com.jcr.wishlist.templates.WishlistTemplate;
@@ -14,7 +15,10 @@ public class WishlistService {
     @Autowired
     private WishlistTemplate wishlistTemplate;
 
-    public void insertCustomerWishlist(Wishlist wishlist){
+    public void insertCustomerWishlist(Wishlist wishlist) throws MaximumProductLimitException {
+        if(wishlist.getProducts().size() > 20)
+            throw new MaximumProductLimitException("Limite máximo de 20 produtos na lista de desejos atingida!");
+
         wishlistTemplate.insertCustomerWishlist(wishlist);
     }
 
@@ -31,7 +35,11 @@ public class WishlistService {
         return  wishlistTemplate.removeProductInCustomerWishlist(customerId, productId);
     }
 
-    public UpdateResult insertProductInCustomerWishlist(String customerId, Product product){
+    public UpdateResult insertProductInCustomerWishlist(String customerId, Product product) throws MaximumProductLimitException {
+        Wishlist wishlist = this.findCustomerWishlist(customerId);
+        if(wishlist.getProducts().size() >= 20)
+            throw new MaximumProductLimitException("Limite máximo de 20 produtos na lista de desejos atingida!");
+
         return  wishlistTemplate.insertProductInCustomerWishlist(customerId, product);
     }
 }

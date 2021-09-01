@@ -53,4 +53,6 @@ public class WishlistTemplate {
         query.addCriteria(Criteria.where("customerId").is(customerId));
         return mongoTemplate.updateFirst(query, new Update().push("products", product), Wishlist.class);
     }
+
+
 }
